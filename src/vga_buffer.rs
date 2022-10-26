@@ -153,3 +153,18 @@ pub fn _print(args: fmt::Arguments) {
     use core::fmt::Write;
     WRITER.lock().write_fmt(args).unwrap();
 }
+
+#[test_case]
+fn test_println_output() {
+    let input = "Some test string that fits on a single line";
+    println!("{}", input);
+
+    for (i, expected) in input.chars().enumerate() {
+        let actual = WRITER.lock().buffer.chars[BUFFER_HEIGHT-2][i].read();
+        assert_eq!(char::from(actual.ascii_char), expected);
+    }
+}
+
+// TODO: test new line functionality
+// TODO: test invalid chars functionality
+// TODO: test splitting string into multiple lines
